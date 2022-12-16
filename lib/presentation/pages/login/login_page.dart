@@ -125,10 +125,10 @@ _passwordTextField({
 }) =>
     MyTextField(
       hintText: 'Password',
-      obscureText: true,
-      suffixIcon: cubit.isPassword
-          ? FaIcon(FontAwesomeIcons.eyeSlash, color: PrimaryColor)
-          : FaIcon(FontAwesomeIcons.eye, color: PrimaryColor),
+      obscureText: cubit.isPassword,
+      suffixIcon: cubit.changePasswordVisibility()
+     // suffix: cubit.suffix,
+      
     );
 
 _loginButton() => MyButton(

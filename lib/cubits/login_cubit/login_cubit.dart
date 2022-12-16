@@ -2,7 +2,10 @@ import 'package:bloc/bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:meta/meta.dart';
+
+import '../../core/const.dart';
 
 part 'login_state.dart';
 
@@ -11,30 +14,39 @@ class LoginCubit extends Cubit<LoginState> {
 
   static LoginCubit get(context) => BlocProvider.of(context);
 
-
 //*login function
-  void userLogin ({
+  void userLogin({
     required String email,
     required String password,
-  }) async{
+  }) async {
     emit(LoginLoadingState());
-FirebaseAuth.instance.signInWithEmailAndPassword(
-    email: email,
-    password: password,
-).then((value) {
-  emit(LoginSuccessState());
-}).catchError((error){
-  emit(LoginErrorState(error.toString()));
-});
+    FirebaseAuth.instance
+        .signInWithEmailAndPassword(
+      email: email,
+      password: password,
+    )
+        .then((value) {
+      emit(LoginSuccessState());
+    }).catchError((error) {
+      emit(LoginErrorState(error.toString()));
+    });
   }
 
   //*change password visibility
   bool isPassword = true;
 
-  IconData suffix = Icons.visibility_outlined;
-  void changePasswordVisibility() {
+//  cubit.isPassword
+//           ? FaIcon(FontAwesomeIcons.eyeSlash, color: PrimaryColor)
+//           : FaIcon(FontAwesomeIcons.eye, color: PrimaryColor),
+
+//     );
+  Widget? suffix = FaIcon(FontAwesomeIcons.eyeSlash, color: PrimaryColor);
+
+  Widget? changePasswordVisibility() {
     isPassword = !isPassword;
-    suffix = isPassword ? Icons.visibility_outlined : Icons.visibility_off_outlined;
+    suffix = isPassword
+        ? FaIcon(FontAwesomeIcons.eyeSlash, color: PrimaryColor)
+        : FaIcon(FontAwesomeIcons.eye, color: PrimaryColor);
     emit(LoginChangePasswordVisibilityState());
   }
 
@@ -47,6 +59,4 @@ FirebaseAuth.instance.signInWithEmailAndPassword(
       emit(LoginErrorState(error.toString()));
     });
   }
-
-
 }
