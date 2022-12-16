@@ -30,6 +30,7 @@ FirebaseAuth.instance.signInWithEmailAndPassword(
 
   //*change password visibility
   bool isPassword = true;
+
   IconData suffix = Icons.visibility_outlined;
   void changePasswordVisibility() {
     isPassword = !isPassword;

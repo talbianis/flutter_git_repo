@@ -1,3 +1,5 @@
+import 'dart:js';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/const.dart';
 import 'package:flutter_application_1/cubits/login_cubit/login_cubit.dart';
@@ -11,6 +13,7 @@ class LoginPage extends StatelessWidget {
   LoginPage({super.key});
 
   double _screenWidth = WidgetsBinding.instance.window.physicalSize.width;
+
   @override
   //email and password controllers
   TextEditingController emailController = TextEditingController();
@@ -21,102 +24,111 @@ class LoginPage extends StatelessWidget {
         create: ((context) => LoginCubit()),
         child: BlocConsumer<LoginCubit, LoginState>(
             listener: (context, state) => {},
-            builder: (context, state) => Scaffold(
-                  body: SafeArea(
-                    child: Padding(
-                      padding: const EdgeInsets.all(PaddingS),
-                      child: Column(
-                        //mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          //*logo
-                          // title
-                          // login text
-                          Spacer(),
-                          Text(
-                            'Sign In',
-                            style: TextStyle(
-                              fontSize: 45,
-                              fontWeight: FontWeight.bold,
-                            ),
+            builder: (context, state) {
+              LoginCubit cubit = LoginCubit.get(context);
+              return Scaffold(
+                body: SafeArea(
+                  child: Padding(
+                    padding: const EdgeInsets.all(PaddingS),
+                    child: Column(
+                      //mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        //*logo
+                        // title
+                        // login text
+                        Spacer(),
+                        Text(
+                          'Sign In',
+                          style: TextStyle(
+                            fontSize: 45,
+                            fontWeight: FontWeight.bold,
                           ),
-                          Spacer(),
-                          Text(
-                            "${AppString.loginText}",
-                            style: kBodyStyle,
-                            textAlign: TextAlign.center,
-                          ),
-                          Spacer(),
-                          // social media login
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        ),
+                        Spacer(),
+                        Text(
+                          "${AppString.loginText}",
+                          style: kBodyStyle,
+                          textAlign: TextAlign.center,
+                        ),
+                        Spacer(),
+                        // social media login
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            // google
+                            _loginWithGoogleButton(),
+                            // facebook
+                            _loginWithFacebookButton(),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 10.0),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              // google
-                              _loginWithGoogleButton(),
-                              // facebook
-                              _loginWithFacebookButton(),
+                              Divider(
+                                color: Color.fromARGB(255, 255, 0, 0),
+                                thickness: 2,
+                                indent: 10,
+                              ),
+                              Text('Or'),
+                              Divider(
+                                color: Colors.black,
+                                thickness: 1,
+                                indent: 10,
+                                endIndent: 10,
+                              ),
                             ],
                           ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 10.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Divider(
-                                  color: Color.fromARGB(255, 255, 0, 0),
-                                  thickness: 2,
-                                  indent: 10,
-                                ),
-                                Text('Or'),
-                                Divider(
-                                  color: Colors.black,
-                                  thickness: 1,
-                                  indent: 10,
-                                  endIndent: 10,
-                                ),
-                              ],
-                            ),
-                          ),
-                          // email text field
+                        ),
+                        // email text field
 
-                          _emailTextField(),
-                          // password text field
-                          _passwordTextField(),
+                        _emailTextField(),
+                        // password text field
+                        _passwordTextField(cubit: cubit),
 
-                          // forgot password
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              _forgotPassword(),
-                            ],
-                          ),
-                          // login button
-                          _loginButton(),
+                        // forgot password
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: [
+                            _forgotPassword(),
+                          ],
+                        ),
+                        // login button
+                        _loginButton(),
 
-                          // sign up
-                          Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
-                            child: Row(children: [
-                              Text('Dont have an account?'),
-                              _registerButton(),
-                            ]),
-                          ),
+                        // sign up
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          child: Row(children: [
+                            Text('Dont have an account?'),
+                            _registerButton(),
+                          ]),
+                        ),
 
-                          // terms and conditions
-                          _termsAndConditions(),
-                          Spacer(),
-                        ],
-                      ),
+                        // terms and conditions
+                        _termsAndConditions(),
+                        Spacer(),
+                      ],
                     ),
                   ),
-                )));
+                ),
+              );
+            }));
   }
 }
 
 _emailTextField() => MyTextField(hintText: 'Email');
 
-_passwordTextField() => MyTextField(
+_passwordTextField({
+  required LoginCubit cubit,
+}) =>
+    MyTextField(
       hintText: 'Password',
       obscureText: true,
+      suffixIcon: cubit.isPassword
+          ? FaIcon(FontAwesomeIcons.eyeSlash, color: PrimaryColor)
+          : FaIcon(FontAwesomeIcons.eye, color: PrimaryColor),
     );
 
 _loginButton() => MyButton(

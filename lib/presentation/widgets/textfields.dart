@@ -8,6 +8,7 @@ MyTextField({
   String Function(String?)? validator,
   TextInputType? keyboardType,
   bool obscureText = false,
+  Widget? suffixIcon ,//= Icons.check,
 }) =>
     Padding(
       padding: const EdgeInsets.all(PaddingS),
@@ -17,6 +18,7 @@ MyTextField({
         keyboardType: keyboardType,
         obscureText: obscureText,
         decoration: InputDecoration(
+          suffixIcon: suffixIcon,
           filled: true,
           fillColor: PrimaryLightColor,
           hintText: hintText,
