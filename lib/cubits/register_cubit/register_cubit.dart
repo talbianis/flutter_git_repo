@@ -24,12 +24,12 @@ class RegisterCubit extends Cubit<RegisterState> {
   }
 
 //! register with google account
-  void registerWithGoogle() async {
-    emit(RegisterLoadingState());
-
-//FirebaseAuth.instance.
+  void registerWithGoogle()async
+  {
+    
   }
 
 //!register with facebook account
-  void registerWithFacebook() async {}
+ //register by google auth function with firebase
+
 }
