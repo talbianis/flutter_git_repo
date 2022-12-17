@@ -1,5 +1,3 @@
-import 'dart:js';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/core/const.dart';
 import 'package:flutter_application_1/cubits/login_cubit/login_cubit.dart';
@@ -16,8 +14,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   //email and password controllers
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
+  
 
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -83,7 +80,7 @@ class LoginPage extends StatelessWidget {
                         ),
                         // email text field
 
-                        _emailTextField(),
+                        _emailTextField(cubit : cubit),
                         // password text field
                         _passwordTextField(cubit: cubit),
 
@@ -95,7 +92,7 @@ class LoginPage extends StatelessWidget {
                           ],
                         ),
                         // login button
-                        _loginButton(),
+                        _loginButton(cubit: cubit),
 
                         // sign up
                         Padding(
@@ -118,22 +115,26 @@ class LoginPage extends StatelessWidget {
   }
 }
 
-_emailTextField() => MyTextField(hintText: 'Email');
+_emailTextField({required LoginCubit cubit}) => MyTextField(
+  controller: cubit.emailController,
+  hintText: 'Email');
 
 _passwordTextField({
   required LoginCubit cubit,
 }) =>
     MyTextField(
+      controller: cubit.passwordController,
       hintText: 'Password',
       obscureText: cubit.isPassword,
-      suffixIcon: cubit.changePasswordVisibility()
-     // suffix: cubit.suffix,
-      
+      suffixIcon: cubit.changePasswordVisibility(),
     );
 
-_loginButton() => MyButton(
+_loginButton({required LoginCubit cubit}) => MyButton(
       bText: 'Login',
       width: sWidth,
+      onTap: (){
+        cubit.userLogin(email: cubit.emailController.text, password: cubit.passwordController.text);
+      }
     );
 
 _forgotPassword() => TextButton(

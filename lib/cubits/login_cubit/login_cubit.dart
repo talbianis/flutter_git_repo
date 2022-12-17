@@ -14,6 +14,10 @@ class LoginCubit extends Cubit<LoginState> {
 
   static LoginCubit get(context) => BlocProvider.of(context);
 
+
+
+TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
 //*login function
   void userLogin({
     required String email,
@@ -33,24 +37,24 @@ class LoginCubit extends Cubit<LoginState> {
   }
 
   //*change password visibility
-  bool isPassword = true;
+  bool isPassword = false;
 
 //  cubit.isPassword
 //           ? FaIcon(FontAwesomeIcons.eyeSlash, color: PrimaryColor)
 //           : FaIcon(FontAwesomeIcons.eye, color: PrimaryColor),
 
 //     );
-  Widget? suffix = FaIcon(FontAwesomeIcons.eyeSlash, color: PrimaryColor);
+  Widget suffixIcon = FaIcon(FontAwesomeIcons.eyeSlash, color: PrimaryColor);
 
   Widget? changePasswordVisibility() {
     isPassword = !isPassword;
-    suffix = isPassword
+    return suffixIcon = isPassword
         ? FaIcon(FontAwesomeIcons.eyeSlash, color: PrimaryColor)
         : FaIcon(FontAwesomeIcons.eye, color: PrimaryColor);
     emit(LoginChangePasswordVisibilityState());
   }
 
-  //*login with google
+  //!login with google
   void loginWithGoogle() {
     emit(LoginLoadingState());
     FirebaseAuth.instance.signInWithPopup(GoogleAuthProvider()).then((value) {
@@ -59,4 +63,7 @@ class LoginCubit extends Cubit<LoginState> {
       emit(LoginErrorState(error.toString()));
     });
   }
+
+  //!login with facebook
+  
 }

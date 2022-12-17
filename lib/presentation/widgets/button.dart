@@ -8,6 +8,7 @@ MyButton({
   String bText = 'Button',
   Color color = PrimaryColor,
   double width = 100.0,
+  void Function()? onTap,
 }) =>
     Padding(
       padding: const EdgeInsets.all(PaddingS),
@@ -24,7 +25,7 @@ MyButton({
             color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(10),
-              onTap: () {},
+              onTap: onTap,
               child: Container(
                   width: width,
                   height: SBheight,
